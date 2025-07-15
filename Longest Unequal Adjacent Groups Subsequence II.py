@@ -1,23 +1,8 @@
 class Solution:
-    def getWordsInLongestSubsequence(self, n, words, groups):
-        dp = [1] * len(groups)
-        pv = [-1] * len(groups)
-        for i in range(1, len(groups)):
-            for j in range(i):
-                if groups[i] == groups[j]:
-                    continue
-                if len(words[i]) != len(words[j]):
-                    continue
-                diff = sum(1 for k in range(len(words[i])) if words[i][k] != words[j][k])
-                if diff != 1:
-                    continue
-                if dp[j] + 1 > dp[i]:
-                    dp[i] = dp[j] + 1
-                    pv[i] = j
-        wi = dp.index(max(dp))
-        ans = []
-        while wi != -1:
-            ans.append(words[wi])
-            wi = pv[wi]
-        ans.reverse()
-        return ans
+    def getWordsInLongestSubsequence(self, w: List[str], g: List[int]) -> List[str]:
+        dp = []
+        for s, g1 in zip(w, g):
+            dp.append(max((q for t, g2, q in zip(w, g, dp) 
+                    if g1 != g2 and len(s)==len(t) and sum(map(ne, s, t)) < 2),
+                key = len, default = []) + [s])
+        return max(dp, key = len)
